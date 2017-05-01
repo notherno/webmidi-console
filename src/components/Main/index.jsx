@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'proptypes'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
 
 class Main extends React.Component {
   constructor (props) {
@@ -17,24 +19,18 @@ class Main extends React.Component {
     }
   }
 
-  handleMidiInChange (ev) {
-    const nextMidiInput = this.state.inputs[ev.target.value]
-
+  handleMidiInChange (ev, key, value) {
     if (this.state.inputDevice) {
       this.state.inputDevice.onmidimessage = null
     }
 
-    nextMidiInput.onmidimessage = this.handleMidiMessage
+    value.onmidimessage = this.handleMidiMessage
 
-    this.setState({inputDevice: nextMidiInput})
-    console.log(nextMidiInput)
+    this.setState({inputDevice: value})
   }
 
-  handleMidiOutChange (ev) {
-    const nextMidiOutput = this.state.outputs[ev.target.value]
-
-    this.setState({outputDevice: nextMidiOutput})
-    console.log(nextMidiOutput)
+  handleMidiOutChange (ev, key, value) {
+    this.setState({outputDevice: value})
   }
 
   handleMidiMessage (ev) {
@@ -46,20 +42,15 @@ class Main extends React.Component {
   }
 
   render () {
-    return <div>
-      <div>
-        <label>Input</label>
-        <select onChange={this.handleMidiInChange}>
-          {this.state.inputs.map((input, index) => <option key={index} value={index}>{input.name}</option>)}
-        </select>
-      </div>
-      <div>
-        <label>Output</label>
-        <select onChange={this.handleMidiOutChange}>
-          {this.state.outputs.map((output, index) => <option key={index} value={index}>{output.name}</option>)}
-        </select>
-      </div>
-    </div>
+    return (<div>
+      <h1>Select MIDI devices</h1>
+      <SelectField floatingLabelText='Input' value={this.state.inputDevice} onChange={this.handleMidiInChange}>
+        {this.state.inputs.map((input, index) => <MenuItem key={input.id} value={input} primaryText={input.name}/>)}
+      </SelectField>
+      <SelectField floatingLabelText='Output' value={this.state.outputDevice} onChange={this.handleMidiOutChange}>
+        {this.state.outputs.map((output, index) => <MenuItem key={output.id} value={output} primaryText={output.name}/>)}
+      </SelectField>
+    </div>)
   }
 }
 
