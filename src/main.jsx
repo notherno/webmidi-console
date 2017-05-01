@@ -1,5 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 import Main from './components/Main';
 
-ReactDOM.render(<Main/>, document.getElementById('root'))
+navigator.requestMIDIAccess({sysex: false}).then(MIDISuccess, MIDIError)
+
+function MIDISuccess (midiAccess) {
+  ReactDOM.render(<Main midiAccess={midiAccess}/>, document.getElementById('root'))
+}
+
+function MIDIError (e) {
+  alert(e)
+}
+
