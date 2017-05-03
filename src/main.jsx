@@ -16,6 +16,6 @@ function MIDISuccess (midiAccess) {
 }
 
 function MIDIError (e) {
-  alert(e)
+  alert('Web MIDI access cannot be established')
 }
 
