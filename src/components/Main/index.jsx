@@ -30,12 +30,14 @@ class Main extends React.Component {
       this.state.inputDevice.onmidimessage = null
     }
 
+    // Bind MIDI message event to MIDI device selected
     value.onmidimessage = this.handleMidiMessage
 
     this.setState({inputDevice: value})
   }
 
   handleMidiOutChange (ev, key, outputDevice) {
+    // Send MIDI program change message to setup MIDI output device
     outputDevice.send([0xc0, this.state.programNumber])
     this.setState({ outputDevice })
   }
@@ -55,11 +57,12 @@ class Main extends React.Component {
     MIDI.sendAllSoundOff(this.state.outputDevice)
   }
 
-  handleChangeProgramSlider (ev, value) {
+  handleChangeProgramSlider (ev, programNumber) {
     if (this.state.outputDevice) {
-      this.state.outputDevice.send([0xc0, value])
+      // Send program change message
+      this.state.outputDevice.send([0xc0, programNumber])
     }
-    this.setState({programNumber: value})
+    this.setState({ programNumbr })
   }
 
   render () {
